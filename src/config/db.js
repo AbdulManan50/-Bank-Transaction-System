@@ -8,5 +8,9 @@ function connectToDB() {
     })
     .catch((err) => {
       console.error("Error connecting to MongoDB:", err);
+      process.exit(1); // Exit the process with an error code
     });
 }
+
+
+module.exports = connectToDB;
