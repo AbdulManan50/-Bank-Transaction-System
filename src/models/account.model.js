@@ -1,25 +1,30 @@
 const mongoose = require("mongoose");
 
-const accountSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: [true, "account must be associated with a user"],
-    index: true,
-  },
-  status: {
-    enum: {
-      values: ["active", "closed", "frozen"],
-      message: "Status must be either active, closed, or frozen",
+const accountSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "account must be associated with a user"],
+      index: true,
+    },
+    status: {
+      enum: {
+        values: ["active", "closed", "frozen"],
+        message: "Status must be either active, closed, or frozen",
+        default: "active",
+      },
+    },
+    currency: {
+      type: String,
+      required: [true, "Currency is required for creating an account"],
+      default: "PKR",
     },
   },
-  currency:{
-    type: String,
-    required: [true, "Currency is required for creating an account"],
-    default: "PKR",
-  }
-}, { timestamps: true });
+  { timestamps: true },
+);
 
+accountSchema.index({ user: 1, status: 1 });
 
 const accountModel = mongoose.model("Account", accountSchema);
 
